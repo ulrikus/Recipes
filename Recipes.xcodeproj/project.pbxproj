@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4590C7E31F30B79C003B7414 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590C7E21F30B79C003B7414 /* Recipe.swift */; };
 		D70F46981F30A57400EEDDCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70F46971F30A57400EEDDCC /* AppDelegate.swift */; };
 		D70F469A1F30A57400EEDDCC /* RecipiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70F46991F30A57400EEDDCC /* RecipiesTableViewController.swift */; };
 		D70F469D1F30A57400EEDDCC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D70F469B1F30A57400EEDDCC /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4590C7E21F30B79C003B7414 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		D70F46941F30A57400EEDDCC /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70F46971F30A57400EEDDCC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D70F46991F30A57400EEDDCC /* RecipiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipiesTableViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			children = (
 				D70F46971F30A57400EEDDCC /* AppDelegate.swift */,
 				D70F46991F30A57400EEDDCC /* RecipiesTableViewController.swift */,
+				4590C7E21F30B79C003B7414 /* Recipe.swift */,
 				D70F469B1F30A57400EEDDCC /* Main.storyboard */,
 				D70F469E1F30A57400EEDDCC /* Assets.xcassets */,
 				D70F46A01F30A57400EEDDCC /* LaunchScreen.storyboard */,
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4590C7E31F30B79C003B7414 /* Recipe.swift in Sources */,
 				D70F469A1F30A57400EEDDCC /* RecipiesTableViewController.swift in Sources */,
 				D70F46981F30A57400EEDDCC /* AppDelegate.swift in Sources */,
 			);
