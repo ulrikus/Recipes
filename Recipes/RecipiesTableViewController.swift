@@ -11,6 +11,7 @@ import UIKit
 class RecipiesTableViewController: UITableViewController {
 
     let reuseIdentifier = "recipeCell"
+    var recipes = [Recipe]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,33 +29,42 @@ class RecipiesTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return recipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         
-        cell?.textLabel?.text = "Recipe \(indexPath.row+1)"
+        cell?.textLabel?.text = recipes[indexPath.row].title
         
         return cell!
     }
     
     func addRecipe() {
         // Create the alert controller
-        let alertController = UIAlertController(title: "Title", message: "Message", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add recipe", message: "Type in the title of your recipe", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField) in
+            
+        }
         
         // Create the actions
-        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
-            UIAlertAction in
-            NSLog("OK Pressed")
+        let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
+            let title = alertController.textFields![0].text
+            let recipe = Recipe(title: title!)
+            
+            self.recipes.append(recipe)
+            self.tableView.reloadData()
+            
+            print(title!)
+            NSLog("Save Pressed")
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
-            UIAlertAction in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
             NSLog("Cancel Pressed")
         }
         
         // Add the actions
-        alertController.addAction(okAction)
+        alertController.addAction(saveAction)
         alertController.addAction(cancelAction)
         
         // Present the controller
