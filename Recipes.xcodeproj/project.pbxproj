@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D70F46981F30A57400EEDDCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70F46971F30A57400EEDDCC /* AppDelegate.swift */; };
-		D70F469A1F30A57400EEDDCC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70F46991F30A57400EEDDCC /* ViewController.swift */; };
+		D70F469A1F30A57400EEDDCC /* RecipiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70F46991F30A57400EEDDCC /* RecipiesTableViewController.swift */; };
 		D70F469D1F30A57400EEDDCC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D70F469B1F30A57400EEDDCC /* Main.storyboard */; };
 		D70F469F1F30A57400EEDDCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D70F469E1F30A57400EEDDCC /* Assets.xcassets */; };
 		D70F46A21F30A57400EEDDCC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D70F46A01F30A57400EEDDCC /* LaunchScreen.storyboard */; };
@@ -36,7 +36,7 @@
 /* Begin PBXFileReference section */
 		D70F46941F30A57400EEDDCC /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70F46971F30A57400EEDDCC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D70F46991F30A57400EEDDCC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D70F46991F30A57400EEDDCC /* RecipiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipiesTableViewController.swift; sourceTree = "<group>"; };
 		D70F469C1F30A57400EEDDCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D70F469E1F30A57400EEDDCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D70F46A11F30A57400EEDDCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				D70F46971F30A57400EEDDCC /* AppDelegate.swift */,
-				D70F46991F30A57400EEDDCC /* ViewController.swift */,
+				D70F46991F30A57400EEDDCC /* RecipiesTableViewController.swift */,
 				D70F469B1F30A57400EEDDCC /* Main.storyboard */,
 				D70F469E1F30A57400EEDDCC /* Assets.xcassets */,
 				D70F46A01F30A57400EEDDCC /* LaunchScreen.storyboard */,
@@ -262,7 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D70F469A1F30A57400EEDDCC /* ViewController.swift in Sources */,
+				D70F469A1F30A57400EEDDCC /* RecipiesTableViewController.swift in Sources */,
 				D70F46981F30A57400EEDDCC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -516,6 +516,7 @@
 				D70F46BE1F30A57500EEDDCC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D70F46BF1F30A57500EEDDCC /* Build configuration list for PBXNativeTarget "RecipesTests" */ = {
 			isa = XCConfigurationList;
@@ -524,6 +525,7 @@
 				D70F46C11F30A57500EEDDCC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D70F46C21F30A57500EEDDCC /* Build configuration list for PBXNativeTarget "RecipesUITests" */ = {
 			isa = XCConfigurationList;
@@ -532,6 +534,7 @@
 				D70F46C41F30A57500EEDDCC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
