@@ -60,23 +60,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R3g-mt-FDk">
-                                <rect key="frame" x="173" y="376" width="29" height="30"/>
-                                <state key="normal" title="Edit"/>
-                                <connections>
-                                    <action selector="editButtonPressed:" destination="yHr-6e-zU5" eventType="touchUpInside" id="NpS-JB-EA3"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.796630859375" green="0.93665907118055558" blue="0.90310329861111116" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="R3g-mt-FDk" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="8" id="6is-0R-uIY"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="R3g-mt-FDk" secondAttribute="trailing" constant="157" id="En0-UH-Dh1"/>
                             <constraint firstItem="To2-BW-mzw" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="299" id="HB0-YZ-ZLW"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="trailing" secondItem="xO4-ib-1zt" secondAttribute="trailingMargin" id="M13-kf-Fc5"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" id="Zgu-YC-VOl"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="top" secondItem="rSv-GQ-QDe" secondAttribute="bottom" constant="234" id="kFl-IB-BMu"/>
-                            <constraint firstItem="R3g-mt-FDk" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" constant="157" id="wck-Bj-rco"/>
                         </constraints>
                     </view>
                     <connections>

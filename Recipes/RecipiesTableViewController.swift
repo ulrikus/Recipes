@@ -12,8 +12,8 @@ class RecipiesTableViewController: UITableViewController {
 
     let segueIdentifier = "recipeDetailSegue"
     var recipes = [Recipe]()
-    var valueToPass: String!
-    
+    var titleToPass: String!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -21,6 +21,7 @@ class RecipiesTableViewController: UITableViewController {
         let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRecipe))
         
         self.navigationItem.rightBarButtonItem = addBarButton
+        self.navigationItem.leftBarButtonItem = editButtonItem
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,7 +50,7 @@ class RecipiesTableViewController: UITableViewController {
         let indexPath = tableView.indexPathForSelectedRow!
         let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
         
-        valueToPass = currentCell.textLabel?.text
+        titleToPass = currentCell.textLabel?.text
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
     }
     
@@ -61,9 +62,26 @@ class RecipiesTableViewController: UITableViewController {
             // initialize new view controller and cast it as your view controller
             let viewController = segue.destination as! DetailViewController
             // your new view controller should have property that will store passed value
-            viewController.recipeTitle = valueToPass
+            viewController.recipeTitle = titleToPass
         }
     }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            recipes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            self.viewDidLoad()
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view 
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    // MARK: Methods
     
     func addRecipe() {
         // Create the alert controller
@@ -80,6 +98,7 @@ class RecipiesTableViewController: UITableViewController {
             
             self.recipes.append(recipe)
             self.tableView.reloadData()
+            self.viewDidLoad()
             
             NSLog("\(title!) saved")
         }
