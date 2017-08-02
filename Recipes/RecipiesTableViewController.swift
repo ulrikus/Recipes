@@ -54,6 +54,31 @@ class RecipiesTableViewController: UITableViewController {
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            recipes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadData()
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+            print("insert editing style")
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let recipe = recipes[sourceIndexPath.row]
+        recipes.remove(at: sourceIndexPath.row)
+        recipes.insert(recipe, at: destinationIndexPath.row)
+    }
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
     // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -64,21 +89,6 @@ class RecipiesTableViewController: UITableViewController {
             // your new view controller should have property that will store passed value
             viewController.recipeTitle = titleToPass
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            recipes.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            self.viewDidLoad()
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view 
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
     }
     
     // MARK: Methods
