@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -33,10 +34,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Recipies" id="SwD-Ok-etD"/>
+                    <connections>
+                        <segue destination="yHr-6e-zU5" kind="show" identifier="recipeDetailSegue" id="ey9-7T-l9Z"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wi5-jh-xwk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="769" y="164"/>
+            <point key="canvasLocation" x="577" y="163"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="d10-lL-I5J">
@@ -49,12 +53,39 @@
                     <view key="view" contentMode="scaleToFill" id="xO4-ib-1zt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3y-k2-wA0">
+                                <rect key="frame" x="16" y="298" width="343" height="70"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R3g-mt-FDk">
+                                <rect key="frame" x="173" y="376" width="29" height="30"/>
+                                <state key="normal" title="Edit"/>
+                                <connections>
+                                    <action selector="editButtonPressed:" destination="yHr-6e-zU5" eventType="touchUpInside" id="NpS-JB-EA3"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.796630859375" green="0.93665907118055558" blue="0.90310329861111116" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="R3g-mt-FDk" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="8" id="6is-0R-uIY"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="R3g-mt-FDk" secondAttribute="trailing" constant="157" id="En0-UH-Dh1"/>
+                            <constraint firstItem="To2-BW-mzw" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="299" id="HB0-YZ-ZLW"/>
+                            <constraint firstItem="m3y-k2-wA0" firstAttribute="trailing" secondItem="xO4-ib-1zt" secondAttribute="trailingMargin" id="M13-kf-Fc5"/>
+                            <constraint firstItem="m3y-k2-wA0" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" id="Zgu-YC-VOl"/>
+                            <constraint firstItem="m3y-k2-wA0" firstAttribute="top" secondItem="rSv-GQ-QDe" secondAttribute="bottom" constant="234" id="kFl-IB-BMu"/>
+                            <constraint firstItem="R3g-mt-FDk" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" constant="157" id="wck-Bj-rco"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="recipeTitleLabel" destination="m3y-k2-wA0" id="cup-fu-cqM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CJF-QI-63D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1721" y="163"/>
+            <point key="canvasLocation" x="1341.5999999999999" y="162.3688155922039"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YXd-3c-S6a">
