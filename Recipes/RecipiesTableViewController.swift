@@ -13,6 +13,14 @@ class RecipiesTableViewController: UITableViewController {
     let segueIdentifier = "recipeDetailSegue"
     var recipes = [Recipe]()
     var titleToPass: String!
+    
+    lazy var database: YapDatabase = {
+        let database = YapDatabase(path: String.databasePath())
+        return database
+    }()
+    lazy var connection: YapDatabaseConnection = {
+       return self.database.newConnection()
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +30,10 @@ class RecipiesTableViewController: UITableViewController {
         
         self.navigationItem.rightBarButtonItem = addBarButton
         self.navigationItem.leftBarButtonItem = editButtonItem
+        
+        connection.readWrite { (transaction) in
+            print(transaction.object(forKey: "world", inCollection: "example1") ?? "")
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -94,34 +106,47 @@ class RecipiesTableViewController: UITableViewController {
     // MARK: Methods
     
     func addRecipe() {
-        // Create the alert controller
-        let alertController = UIAlertController(title: "Add recipe", message: "Type in the title of your recipe", preferredStyle: .alert)
-        
-        alertController.addTextField { (textField) in
-            
+        self.connection.readWrite { (transaction) in
+            transaction.setObject(Date(), forKey: "world", inCollection: "example1")
         }
-        
-        // Create the actions
-        let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
-            let title = alertController.textFields![0].text
-            let recipe = Recipe(title: title!)
-            
-            self.recipes.append(recipe)
-            self.tableView.reloadData()
-            self.viewDidLoad()
-            
-            NSLog("\(title!) saved")
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
-            NSLog("Cancel Pressed")
-        }
-        
-        // Add the actions
-        alertController.addAction(saveAction)
-        alertController.addAction(cancelAction)
-        
-        // Present the controller
-        self.present(alertController, animated: true, completion: nil)
+//        // Create the alert controller
+//        let alertController = UIAlertController(title: "Add recipe", message: "Type in the title of your recipe", preferredStyle: .alert)
+//        
+//        alertController.addTextField { (textField) in
+//            
+//        }
+//        
+//        // Create the actions
+//        let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
+//            let title = alertController.textFields![0].text
+//            let recipe = Recipe(title: title!)
+//            
+//            self.recipes.append(recipe)
+//            self.tableView.reloadData()
+//            self.viewDidLoad()
+//            
+//            NSLog("\(title!) saved")
+//        }
+//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
+//            NSLog("Cancel Pressed")
+//        }
+//        
+//        // Add the actions
+//        alertController.addAction(saveAction)
+//        alertController.addAction(cancelAction)
+//        
+//        // Present the controller
+//        self.present(alertController, animated: true, completion: nil)
     }
 }
 
+extension String {
+    static func databasePath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let baseDir = paths.count > 0 ? paths[0] : NSTemporaryDirectory()
+        
+        let databaseName = "database.sqlite"
+        
+        return baseDir + databaseName
+    }
+}

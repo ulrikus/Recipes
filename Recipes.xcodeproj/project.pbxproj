@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45438F641F3304A400618406 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 45438F631F3304A400618406 /* Test.m */; };
 		4571CAB51F30BF0D00F0246F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4571CAB41F30BF0D00F0246F /* DetailViewController.swift */; };
 		4590C7E31F30B79C003B7414 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4590C7E21F30B79C003B7414 /* Recipe.swift */; };
 		D70F46981F30A57400EEDDCC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70F46971F30A57400EEDDCC /* AppDelegate.swift */; };
@@ -38,6 +39,9 @@
 
 /* Begin PBXFileReference section */
 		29C6E3D528BF8D31034F631D /* Pods-Recipes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recipes.release.xcconfig"; path = "Pods/Target Support Files/Pods-Recipes/Pods-Recipes.release.xcconfig"; sourceTree = "<group>"; };
+		45438F611F3304A400618406 /* Recipes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Recipes-Bridging-Header.h"; sourceTree = "<group>"; };
+		45438F621F3304A400618406 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		45438F631F3304A400618406 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		4571CAB41F30BF0D00F0246F /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4590C7E21F30B79C003B7414 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		774547BB9FFFE1C3797C5400 /* libPods-Recipes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Recipes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +128,9 @@
 				D70F469E1F30A57400EEDDCC /* Assets.xcassets */,
 				D70F46A01F30A57400EEDDCC /* LaunchScreen.storyboard */,
 				D70F46A31F30A57400EEDDCC /* Info.plist */,
+				45438F621F3304A400618406 /* Test.h */,
+				45438F631F3304A400618406 /* Test.m */,
+				45438F611F3304A400618406 /* Recipes-Bridging-Header.h */,
 			);
 			path = Recipes;
 			sourceTree = "<group>";
@@ -227,6 +234,7 @@
 					D70F46931F30A57400EEDDCC = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = B56SMCV7PR;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					D70F46A71F30A57400EEDDCC = {
@@ -343,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45438F641F3304A400618406 /* Test.m in Sources */,
 				4590C7E31F30B79C003B7414 /* Recipe.swift in Sources */,
 				D70F469A1F30A57400EEDDCC /* RecipiesTableViewController.swift in Sources */,
 				D70F46981F30A57400EEDDCC /* AppDelegate.swift in Sources */,
@@ -501,11 +510,14 @@
 			baseConfigurationReference = E9776E086A9585CB6584EFF4 /* Pods-Recipes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = B56SMCV7PR;
 				INFOPLIST_FILE = Recipes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ulrik.Recipes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Recipes/Recipes-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -515,11 +527,13 @@
 			baseConfigurationReference = 29C6E3D528BF8D31034F631D /* Pods-Recipes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = B56SMCV7PR;
 				INFOPLIST_FILE = Recipes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ulrik.Recipes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Recipes/Recipes-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
