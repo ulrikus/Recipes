@@ -8,6 +8,21 @@
 
 import UIKit
 
+class DatabaseManager {
+
+    let database: YapDatabase
+    let connection: YapDatabaseConnection
+    
+    static let shared: DatabaseManager = {
+        return DatabaseManager(database: YapDatabase(path: String.databasePath()))
+    }()
+    
+    private init(database: YapDatabase) {
+        self.database = database
+        self.connection = database.newConnection()
+    }
+}
+
 class RecipiesTableViewController: UITableViewController {
 
     let segueIdentifier = "recipeDetailSegue"
@@ -16,14 +31,6 @@ class RecipiesTableViewController: UITableViewController {
     var titleToPass: String!
     var keyToPass: String!
     
-    lazy var database: YapDatabase = {
-        let database = YapDatabase(path: String.databasePath())
-        return database
-    }()
-    lazy var connection: YapDatabaseConnection = {
-       return self.database.newConnection()
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -34,6 +41,12 @@ class RecipiesTableViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem = editButtonItem
         
         loadRecipes()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,7 +85,7 @@ class RecipiesTableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             // Delete recipe from database
-            connection.readWrite { (transaction) in
+            DatabaseManager.shared.connection.readWrite { (transaction) in
                 let deleteKey = transaction.allKeys(inCollection: self.databaseCollection)[indexPath.row]
                 transaction.removeObject(forKey: deleteKey, inCollection: self.databaseCollection)
                 print(transaction.allKeys(inCollection: self.databaseCollection))
@@ -110,9 +123,7 @@ class RecipiesTableViewController: UITableViewController {
             let viewController = segue.destination as! DetailViewController
             // your new view controller should have property that will store passed value
             viewController.recipeTitle = titleToPass
-//            viewController.databaseKeyForValue = keyToPass
-//            viewController.connection = connection
-//            viewController.databaseCollection = databaseCollection
+            viewController.databaseKey = keyToPass
         }
     }
     
@@ -138,7 +149,7 @@ class RecipiesTableViewController: UITableViewController {
                 self.tableView.reloadData()
                 
                 // Save recipe to database
-                self.connection.readWrite { (transaction) in
+                DatabaseManager.shared.connection.readWrite { (transaction) in
                     transaction.setObject(title, forKey: (recipe.title + "Recipe"), inCollection: self.databaseCollection)
                     print(transaction.allKeys(inCollection: self.databaseCollection))
                 }
@@ -160,7 +171,7 @@ class RecipiesTableViewController: UITableViewController {
     
     func loadRecipes() {
         // Read recipe from database
-        connection.readWrite { (transaction) in
+        DatabaseManager.shared.connection.readWrite { (transaction) in
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
             print(allKeys)
             
