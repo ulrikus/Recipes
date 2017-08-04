@@ -110,9 +110,9 @@ class RecipiesTableViewController: UITableViewController {
             let viewController = segue.destination as! DetailViewController
             // your new view controller should have property that will store passed value
             viewController.recipeTitle = titleToPass
-            viewController.databaseKeyForValue = keyToPass
-            viewController.connection = connection
-            viewController.databaseCollection = databaseCollection
+//            viewController.databaseKeyForValue = keyToPass
+//            viewController.connection = connection
+//            viewController.databaseCollection = databaseCollection
         }
     }
     
