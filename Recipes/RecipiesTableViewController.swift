@@ -46,6 +46,7 @@ class RecipiesTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // The updated recipe must be loaded into the recepies array to populate the table!
         tableView.reloadData()
     }
 

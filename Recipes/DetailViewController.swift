@@ -11,9 +11,8 @@ import UIKit
 class DetailViewController: UIViewController {
     
     var recipeTitle: String?
-//    var connection: YapDatabaseConnection?
-//    var databaseCollection: String?
-//    var databaseKeyForValue: String?
+    var databaseKey: String?
+    let databaseCollection = "collection"
     
     @IBOutlet weak var recipeTitleLabel: UILabel!
     
@@ -37,15 +36,14 @@ class DetailViewController: UIViewController {
         // Create the actions
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let newTitle = alertController.textFields![0].text
-//            let recipe = Recipe(title: newTitle!)
             
             self.recipeTitleLabel.text = newTitle
             
             // Do something to change the array of Recipes so that the change is saved. Change value in database?????
-//            self.connection?.readWrite { (transaction) in
-//                transaction.setObject(newTitle, forKey: self.databaseKeyForValue!, inCollection: self.databaseCollection)
-//                print(transaction.allKeys(inCollection: self.databaseCollection))
-//            }
+            DatabaseManager.shared.connection.readWrite { (transaction) in
+                transaction.setObject(newTitle, forKey: self.databaseKey!, inCollection: self.databaseCollection)
+                print(transaction.allKeys(inCollection: self.databaseCollection))
+            }
             
             NSLog("Save Edited Recipe")
         }
