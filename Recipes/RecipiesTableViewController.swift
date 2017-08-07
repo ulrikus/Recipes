@@ -33,20 +33,19 @@ class RecipiesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
+       
         let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRecipe))
         
         self.navigationItem.rightBarButtonItem = addBarButton
         self.navigationItem.leftBarButtonItem = editButtonItem
         
-        loadRecipes()
+        loadRecipesFromDatabase()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // The updated recipe must be loaded into the recepies array to populate the table!
+        updateRecipes()
         tableView.reloadData()
     }
 
@@ -106,6 +105,7 @@ class RecipiesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        // No need since the database alphabetizes the dictionary when reloaded
         let recipe = recipes[sourceIndexPath.row]
         recipes.remove(at: sourceIndexPath.row)
         recipes.insert(recipe, at: destinationIndexPath.row)
@@ -170,11 +170,29 @@ class RecipiesTableViewController: UITableViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func loadRecipes() {
+    func loadRecipesFromDatabase() {
         // Read recipe from database
         DatabaseManager.shared.connection.readWrite { (transaction) in
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
             print(allKeys)
+            
+            for key in allKeys {
+                guard let title = transaction.object(forKey: key, inCollection: self.databaseCollection) as? String else {
+                    return
+                }
+                let recipe = Recipe(title: title)
+                self.recipes.append(recipe)
+            }
+        }
+    }
+    
+    func updateRecipes() {
+        // Check size of database dictionary and change just the titles (maybe?)
+        DatabaseManager.shared.connection.readWrite { (transaction) in
+            let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
+            print(allKeys)
+            
+            self.recipes.removeAll()
             
             for key in allKeys {
                 guard let title = transaction.object(forKey: key, inCollection: self.databaseCollection) as? String else {

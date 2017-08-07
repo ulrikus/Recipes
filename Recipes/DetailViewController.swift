@@ -41,7 +41,9 @@ class DetailViewController: UIViewController {
             
             // Do something to change the array of Recipes so that the change is saved. Change value in database?????
             DatabaseManager.shared.connection.readWrite { (transaction) in
-                transaction.setObject(newTitle, forKey: self.databaseKey!, inCollection: self.databaseCollection)
+                transaction.removeObject(forKey: self.databaseKey!, inCollection: self.databaseCollection)
+                
+                transaction.setObject(newTitle, forKey: newTitle! + "Recipe", inCollection: self.databaseCollection)
                 print(transaction.allKeys(inCollection: self.databaseCollection))
             }
             
