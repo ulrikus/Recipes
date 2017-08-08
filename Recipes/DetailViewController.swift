@@ -11,15 +11,18 @@ import UIKit
 class DetailViewController: UIViewController {
     
     var recipeTitle: String?
+    var cookTime: Int?
     var databaseKey: String?
     let databaseCollection = "collection"
     
     @IBOutlet weak var recipeTitleLabel: UILabel!
+    @IBOutlet weak var cookTimeLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         recipeTitleLabel.text = recipeTitle
+        cookTimeLabel.text = "Estimated cook time: \(cookTime ?? 0) minutes"
         
         let editBarButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editRecipe))
 
@@ -32,18 +35,24 @@ class DetailViewController: UIViewController {
         alertController.addTextField { (textField) in
             textField.placeholder = self.recipeTitle
         }
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Cook Time in minutes"
+        }
         
         // Create the actions
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let newTitle = alertController.textFields![0].text
+            let newCookTime = Int(alertController.textFields![1].text!)
+            
+            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!)
             
             self.recipeTitleLabel.text = newTitle
+            self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"
             
-            // Do something to change the array of Recipes so that the change is saved. Change value in database?????
             DatabaseManager.shared.connection.readWrite { (transaction) in
                 transaction.removeObject(forKey: self.databaseKey!, inCollection: self.databaseCollection)
                 
-                transaction.setObject(newTitle, forKey: newTitle! + "Recipe", inCollection: self.databaseCollection)
+                transaction.setObject(newRecipe, forKey: newTitle! + "Recipe", inCollection: self.databaseCollection)
                 print(transaction.allKeys(inCollection: self.databaseCollection))
             }
             

@@ -19,12 +19,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recipeCell" id="eUQ-yy-unQ">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recipeCell" textLabel="R5h-Td-yG1" detailTextLabel="lYL-vQ-67D" style="IBUITableViewCellStyleSubtitle" id="eUQ-yy-unQ">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eUQ-yy-unQ" id="UQX-Sv-GHA">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="R5h-Td-yG1">
+                                            <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lYL-vQ-67D">
+                                            <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -60,16 +76,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwJ-F5-DsZ">
+                                <rect key="frame" x="16" y="376" width="343" height="21.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.796630859375" green="0.93665907118055558" blue="0.90310329861111116" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="hwJ-F5-DsZ" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="8" id="3O4-8l-Hgy"/>
+                            <constraint firstItem="hwJ-F5-DsZ" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" id="9kt-5p-YF5"/>
                             <constraint firstItem="To2-BW-mzw" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="299" id="HB0-YZ-ZLW"/>
+                            <constraint firstItem="hwJ-F5-DsZ" firstAttribute="trailing" secondItem="xO4-ib-1zt" secondAttribute="trailingMargin" id="Lfi-bS-FZt"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="trailing" secondItem="xO4-ib-1zt" secondAttribute="trailingMargin" id="M13-kf-Fc5"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" id="Zgu-YC-VOl"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="top" secondItem="rSv-GQ-QDe" secondAttribute="bottom" constant="234" id="kFl-IB-BMu"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cookTimeLabel" destination="hwJ-F5-DsZ" id="b5Z-Hx-9FO"/>
                         <outlet property="recipeTitleLabel" destination="m3y-k2-wA0" id="cup-fu-cqM"/>
                     </connections>
                 </viewController>

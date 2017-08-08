@@ -29,6 +29,7 @@ class RecipiesTableViewController: UITableViewController {
     let databaseCollection = "collection"
     var recipes = [Recipe]()
     var titleToPass: String!
+    var cookTimeToPass: Int = 0
     var keyToPass: String!
     
     override func viewDidLoad() {
@@ -66,15 +67,16 @@ class RecipiesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         
         cell?.textLabel?.text = recipes[indexPath.row].title
+        cell?.detailTextLabel?.text = "Cook time: \(recipes[indexPath.row].cookTime) min"
         
         return cell!
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow!
-        let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
         
-        titleToPass = currentCell.textLabel?.text
+        titleToPass = recipes[indexPath.row].title
+        cookTimeToPass = recipes[indexPath.row].cookTime
         keyToPass = titleToPass + "Recipe"
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
     }
@@ -124,6 +126,7 @@ class RecipiesTableViewController: UITableViewController {
             let viewController = segue.destination as! DetailViewController
             // your new view controller should have property that will store passed value
             viewController.recipeTitle = titleToPass
+            viewController.cookTime = cookTimeToPass
             viewController.databaseKey = keyToPass
         }
     }
@@ -138,10 +141,16 @@ class RecipiesTableViewController: UITableViewController {
             textField.placeholder = "Recipe title"
         }
         
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Cook time in minutes"
+        }
+        
         // Create the actions
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let title = alertController.textFields![0].text
-            let recipe = Recipe(title: title!)
+            let cookTime: Int? = Int((alertController.textFields?[1].text)!)
+            
+            let recipe = Recipe(title: title!, cookTime: cookTime!)
             
             if title == "" {
                 NSLog("Empty recipe title. Nothing is saved.")
@@ -151,11 +160,11 @@ class RecipiesTableViewController: UITableViewController {
                 
                 // Save recipe to database
                 DatabaseManager.shared.connection.readWrite { (transaction) in
-                    transaction.setObject(title, forKey: (recipe.title + "Recipe"), inCollection: self.databaseCollection)
+                    transaction.setObject(recipe, forKey: (recipe.title + "Recipe"), inCollection: self.databaseCollection)
                     print(transaction.allKeys(inCollection: self.databaseCollection))
                 }
                 
-                NSLog("\(title!) saved")
+                NSLog("Saved: \(recipe)")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
@@ -177,10 +186,12 @@ class RecipiesTableViewController: UITableViewController {
             print(allKeys)
             
             for key in allKeys {
-                guard let title = transaction.object(forKey: key, inCollection: self.databaseCollection) as? String else {
+                guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
                     return
                 }
-                let recipe = Recipe(title: title)
+                print(recipe.title)
+                print(recipe.cookTime)
+                
                 self.recipes.append(recipe)
             }
         }
@@ -192,13 +203,10 @@ class RecipiesTableViewController: UITableViewController {
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
             print(allKeys)
             
-            self.recipes.removeAll()
-            
             for key in allKeys {
-                guard let title = transaction.object(forKey: key, inCollection: self.databaseCollection) as? String else {
+                guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
                     return
                 }
-                let recipe = Recipe(title: title)
                 self.recipes.append(recipe)
             }
         }
