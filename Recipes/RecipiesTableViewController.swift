@@ -46,8 +46,8 @@ class RecipiesTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-//        updateRecipes()
-//        tableView.reloadData()
+        updateRecipes()
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -185,6 +185,8 @@ class RecipiesTableViewController: UITableViewController {
         DatabaseManager.shared.connection.readWrite { (transaction) in
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
             print(allKeys)
+            print("\(allKeys.count) recipes:")
+            print("")
             
             for key in allKeys {
                 guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
@@ -200,15 +202,16 @@ class RecipiesTableViewController: UITableViewController {
     }
     
     func updateRecipes() {
-        // Check size of database dictionary and change just the titles (maybe?)
+        // Basically does the same as loadRecipesFromDatabase(), but without the print()-statements and that this method deletes the array before populating it again
         DatabaseManager.shared.connection.readWrite { (transaction) in
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
+            self.recipes.removeAll()
             
             for key in allKeys {
                 guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
                     return
                 }
-                self.recipes.append(recipe)
+               self.recipes.append(recipe)
             }
         }
     }
