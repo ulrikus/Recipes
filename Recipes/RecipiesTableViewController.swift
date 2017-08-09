@@ -29,7 +29,7 @@ class RecipiesTableViewController: UITableViewController {
     let databaseCollection = "collection"
     var recipes = [Recipe]()
     var titleToPass: String!
-    var cookTimeToPass: Int = 0
+    var cookTimeToPass = Int()
     var keyToPass: String!
     
     override func viewDidLoad() {
@@ -40,7 +40,7 @@ class RecipiesTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = addBarButton
         self.navigationItem.leftBarButtonItem = editButtonItem
         
-        loadRecipesFromDatabase()
+        loadRecipesFromDatabase()        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,6 +78,7 @@ class RecipiesTableViewController: UITableViewController {
         titleToPass = recipes[indexPath.row].Title
         cookTimeToPass = recipes[indexPath.row].CookTime
         keyToPass = titleToPass + "Recipe"
+        
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
     }
     
@@ -164,7 +165,7 @@ class RecipiesTableViewController: UITableViewController {
                     print(transaction.allKeys(inCollection: self.databaseCollection))
                 }
                 
-                NSLog("Saved: \(recipe)")
+                NSLog("Saved: \(recipe.Title), \(recipe.CookTime) min")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in

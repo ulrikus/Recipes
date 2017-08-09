@@ -16,7 +16,7 @@ class Recipe: NSObject, NSCoding {
     }
     
     private var _title = ""
-    private var _cookTime = 0
+    private var _cookTime = Int()
     
     init(title: String, cookTime: Int) {
         self._title = title
@@ -27,9 +27,10 @@ class Recipe: NSObject, NSCoding {
         if let titleObject = aDecoder.decodeObject(forKey: Keys.Title) as? String {
             _title = titleObject
         }
-        if let cookTimeObject = aDecoder.decodeObject(forKey: Keys.CookTime) as? Int {
-            _cookTime = cookTimeObject
-        }
+        
+        let cookTimeObject = aDecoder.decodeInteger(forKey: Keys.CookTime)
+        _cookTime = cookTimeObject
+        
     }
     
     func encode(with aCoder: NSCoder) {
