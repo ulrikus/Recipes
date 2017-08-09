@@ -46,8 +46,8 @@ class RecipiesTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        updateRecipes()
-        tableView.reloadData()
+//        updateRecipes()
+//        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,8 +66,8 @@ class RecipiesTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         
-        cell?.textLabel?.text = recipes[indexPath.row].title
-        cell?.detailTextLabel?.text = "Cook time: \(recipes[indexPath.row].cookTime) min"
+        cell?.textLabel?.text = recipes[indexPath.row].Title
+        cell?.detailTextLabel?.text = "Cook time: \(recipes[indexPath.row].CookTime) min"
         
         return cell!
     }
@@ -75,8 +75,8 @@ class RecipiesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow!
         
-        titleToPass = recipes[indexPath.row].title
-        cookTimeToPass = recipes[indexPath.row].cookTime
+        titleToPass = recipes[indexPath.row].Title
+        cookTimeToPass = recipes[indexPath.row].CookTime
         keyToPass = titleToPass + "Recipe"
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
     }
@@ -93,7 +93,7 @@ class RecipiesTableViewController: UITableViewController {
                 print(transaction.allKeys(inCollection: self.databaseCollection))
             }
 
-            NSLog("\(deletedRecipe.title) deleted")
+            NSLog("\(deletedRecipe.Title) deleted")
             
             tableView.reloadData()
         } else if editingStyle == .insert {
@@ -160,7 +160,7 @@ class RecipiesTableViewController: UITableViewController {
                 
                 // Save recipe to database
                 DatabaseManager.shared.connection.readWrite { (transaction) in
-                    transaction.setObject(recipe, forKey: (recipe.title + "Recipe"), inCollection: self.databaseCollection)
+                    transaction.setObject(recipe, forKey: (recipe.Title + "Recipe"), inCollection: self.databaseCollection)
                     print(transaction.allKeys(inCollection: self.databaseCollection))
                 }
                 
@@ -189,8 +189,9 @@ class RecipiesTableViewController: UITableViewController {
                 guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
                     return
                 }
-                print(recipe.title)
-                print(recipe.cookTime)
+                print("Recipe title: " + recipe.Title)
+                print("Cook time: \(recipe.CookTime)")
+                print("")
                 
                 self.recipes.append(recipe)
             }
@@ -201,7 +202,6 @@ class RecipiesTableViewController: UITableViewController {
         // Check size of database dictionary and change just the titles (maybe?)
         DatabaseManager.shared.connection.readWrite { (transaction) in
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
-            print(allKeys)
             
             for key in allKeys {
                 guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
