@@ -6,21 +6,24 @@
 //  Copyright © 2017 Ulrik Utheim Sverdrup. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Recipe: NSObject, NSCoding {
     
     struct Keys {
         static let Title = "recipe"
         static let CookTime = "cookTime"
+        static let Image = "image"
     }
     
     private var _title = ""
     private var _cookTime = Int()
+    private var _image = UIImage(named: "recipeImage")
     
-    init(title: String, cookTime: Int) {
+    init(title: String, cookTime: Int, image: UIImage) {
         self._title = title
         self._cookTime = cookTime
+        self._image = image
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,6 +54,14 @@ class Recipe: NSObject, NSCoding {
             return _cookTime
         } set {
             _cookTime = newValue
+        }
+    }
+    
+    var Image: UIImage {
+        get {
+            return _image!
+        } set {
+            _image = newValue
         }
     }
 }
