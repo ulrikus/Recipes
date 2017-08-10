@@ -13,16 +13,19 @@ class DetailViewController: UIViewController {
     var recipeTitle: String?
     var cookTime: Int?
     var databaseKey: String?
+    var recipeImage = #imageLiteral(resourceName: "standardRecipeImage")
     let databaseCollection = "collection"
     
     @IBOutlet weak var recipeTitleLabel: UILabel!
     @IBOutlet weak var cookTimeLabel: UILabel!
+    @IBOutlet weak var recipeImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         recipeTitleLabel.text = recipeTitle
         cookTimeLabel.text = "Estimated cook time: \(cookTime ?? 0) minutes"
+        recipeImageView.image = recipeImage
         
         let editBarButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editRecipe))
 
@@ -43,9 +46,8 @@ class DetailViewController: UIViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let newTitle = alertController.textFields![0].text
             let newCookTime = Int(alertController.textFields![1].text!)
-            let image = #imageLiteral(resourceName: "recipeImage")
             
-            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, image: image)
+            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, image: self.recipeImage)
             
             self.recipeTitleLabel.text = newTitle
             self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"

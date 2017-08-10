@@ -39,7 +39,7 @@ class Recipe: NSObject, NSCoding {
         if let imageData = aDecoder.decodeObject(forKey: Keys.Image) as? Data {
             image = UIImage(data: imageData)
         } else {
-            image = #imageLiteral(resourceName: "recipeImage")
+            image = #imageLiteral(resourceName: "standardRecipeImage")
         }
     }
     

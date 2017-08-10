@@ -32,11 +32,13 @@ class RecipiesTableViewController: UITableViewController {
     var titleToPass: String!
     var cookTimeToPass = Int()
     var keyToPass: String!
+//    var imageToPass: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+        let nib = UINib(nibName: reuseIdentifier, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: reuseIdentifier)
        
         let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRecipe))
         
@@ -79,6 +81,7 @@ class RecipiesTableViewController: UITableViewController {
         
         titleToPass = recipes[indexPath.row].title
         cookTimeToPass = recipes[indexPath.row].cookTime
+//        imageToPass = recipes[indexPath.row].image
         keyToPass = titleToPass + "Recipe"
         
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
@@ -130,6 +133,7 @@ class RecipiesTableViewController: UITableViewController {
             // your new view controller should have property that will store passed value
             viewController.recipeTitle = titleToPass
             viewController.cookTime = cookTimeToPass
+//            viewController.recipeImage = imageToPass
             viewController.databaseKey = keyToPass
         }
     }
@@ -152,7 +156,7 @@ class RecipiesTableViewController: UITableViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let title = alertController.textFields![0].text
             let cookTime: Int? = Int((alertController.textFields?[1].text)!)
-            let image = #imageLiteral(resourceName: "recipeImage")
+            let image = #imageLiteral(resourceName: "standardRecipeImage")
             
             let recipe = Recipe(title: title!, cookTime: cookTime!, image: image)
             
