@@ -82,20 +82,29 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recipeImage" translatesAutoresizingMaskIntoConstraints="NO" id="lZE-Pl-xlf">
+                                <rect key="frame" x="16" y="64" width="343" height="226"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.796630859375" green="0.93665907118055558" blue="0.90310329861111116" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="hwJ-F5-DsZ" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="8" id="3O4-8l-Hgy"/>
                             <constraint firstItem="hwJ-F5-DsZ" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" id="9kt-5p-YF5"/>
                             <constraint firstItem="To2-BW-mzw" firstAttribute="top" secondItem="m3y-k2-wA0" secondAttribute="bottom" constant="299" id="HB0-YZ-ZLW"/>
+                            <constraint firstItem="lZE-Pl-xlf" firstAttribute="trailing" secondItem="xO4-ib-1zt" secondAttribute="trailingMargin" id="LdZ-Ed-SBv"/>
                             <constraint firstItem="hwJ-F5-DsZ" firstAttribute="trailing" secondItem="xO4-ib-1zt" secondAttribute="trailingMargin" id="Lfi-bS-FZt"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="trailing" secondItem="xO4-ib-1zt" secondAttribute="trailingMargin" id="M13-kf-Fc5"/>
+                            <constraint firstItem="lZE-Pl-xlf" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" id="WOU-VS-Krf"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="leading" secondItem="xO4-ib-1zt" secondAttribute="leadingMargin" id="Zgu-YC-VOl"/>
+                            <constraint firstItem="m3y-k2-wA0" firstAttribute="top" secondItem="lZE-Pl-xlf" secondAttribute="bottom" constant="8" id="ciN-HR-3ef"/>
                             <constraint firstItem="m3y-k2-wA0" firstAttribute="top" secondItem="rSv-GQ-QDe" secondAttribute="bottom" constant="234" id="kFl-IB-BMu"/>
+                            <constraint firstItem="lZE-Pl-xlf" firstAttribute="top" secondItem="rSv-GQ-QDe" secondAttribute="bottom" id="kPr-sD-SHZ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="cookTimeLabel" destination="hwJ-F5-DsZ" id="b5Z-Hx-9FO"/>
+                        <outlet property="recipeImage" destination="lZE-Pl-xlf" id="1Nn-2W-Fve"/>
+                        <outlet property="recipeImageView" destination="lZE-Pl-xlf" id="7w2-Mf-1WA"/>
                         <outlet property="recipeTitleLabel" destination="m3y-k2-wA0" id="cup-fu-cqM"/>
                     </connections>
                 </viewController>
@@ -120,4 +129,7 @@
             <point key="canvasLocation" x="-183" y="164"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="recipeImage" width="1280" height="1092"/>
+    </resources>
 </document>

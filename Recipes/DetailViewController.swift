@@ -43,8 +43,9 @@ class DetailViewController: UIViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let newTitle = alertController.textFields![0].text
             let newCookTime = Int(alertController.textFields![1].text!)
+            let image = #imageLiteral(resourceName: "recipeImage")
             
-            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!)
+            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, image: image)
             
             self.recipeTitleLabel.text = newTitle
             self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"

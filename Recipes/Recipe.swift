@@ -16,52 +16,36 @@ class Recipe: NSObject, NSCoding {
         static let Image = "image"
     }
     
-    private var _title = ""
-    private var _cookTime = Int()
-    private var _image = UIImage(named: "recipeImage")
+    let title: String
+    let cookTime: Int
+    let image: UIImage?
     
     init(title: String, cookTime: Int, image: UIImage) {
-        self._title = title
-        self._cookTime = cookTime
-        self._image = image
+        self.title = title
+        self.cookTime = cookTime
+        self.image = image
     }
     
     required init?(coder aDecoder: NSCoder) {
         if let titleObject = aDecoder.decodeObject(forKey: Keys.Title) as? String {
-            _title = titleObject
+            title = titleObject
+        } else {
+            title = "No title"
         }
         
         let cookTimeObject = aDecoder.decodeInteger(forKey: Keys.CookTime)
-        _cookTime = cookTimeObject
+        cookTime = cookTimeObject
         
+        if let imageData = aDecoder.decodeObject(forKey: Keys.Image) as? Data {
+            image = UIImage(data: imageData)
+        } else {
+            image = #imageLiteral(resourceName: "recipeImage")
+        }
     }
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(_title, forKey: Keys.Title)
-        aCoder.encode(_cookTime, forKey: Keys.CookTime)
-    }
-    
-    var Title: String {
-        get {
-            return _title
-        } set {
-            _title = newValue
-        }
-    }
-    
-    var CookTime: Int {
-        get {
-            return _cookTime
-        } set {
-            _cookTime = newValue
-        }
-    }
-    
-    var Image: UIImage {
-        get {
-            return _image!
-        } set {
-            _image = newValue
-        }
+        aCoder.encode(title, forKey: Keys.Title)
+        aCoder.encode(cookTime, forKey: Keys.CookTime)
+        aCoder.encode(image, forKey: Keys.Image)
     }
 }

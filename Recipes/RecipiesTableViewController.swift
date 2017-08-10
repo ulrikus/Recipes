@@ -27,6 +27,7 @@ class RecipiesTableViewController: UITableViewController {
 
     let segueIdentifier = "recipeDetailSegue"
     let databaseCollection = "collection"
+    let reuseIdentifier = "CustomRecipeCell"
     var recipes = [Recipe]()
     var titleToPass: String!
     var cookTimeToPass = Int()
@@ -34,6 +35,8 @@ class RecipiesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
        
         let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRecipe))
         
@@ -62,21 +65,20 @@ class RecipiesTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reuseIdentifier = "recipeCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as! CustomRecipeCell
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
+        cell.recipeTitleLabel.text = recipes[indexPath.row].title
+        cell.recipeCookTimeLabel.text = "Cook time: \(recipes[indexPath.row].cookTime) min"
+        cell.recipeImage.image = recipes[indexPath.row].image
         
-        cell?.textLabel?.text = recipes[indexPath.row].Title
-        cell?.detailTextLabel?.text = "Cook time: \(recipes[indexPath.row].CookTime) min"
-        
-        return cell!
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow!
         
-        titleToPass = recipes[indexPath.row].Title
-        cookTimeToPass = recipes[indexPath.row].CookTime
+        titleToPass = recipes[indexPath.row].title
+        cookTimeToPass = recipes[indexPath.row].cookTime
         keyToPass = titleToPass + "Recipe"
         
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
@@ -94,7 +96,7 @@ class RecipiesTableViewController: UITableViewController {
                 print(transaction.allKeys(inCollection: self.databaseCollection))
             }
 
-            NSLog("\(deletedRecipe.Title) deleted")
+            NSLog("\(deletedRecipe.title) deleted")
             
             tableView.reloadData()
         } else if editingStyle == .insert {
@@ -150,8 +152,9 @@ class RecipiesTableViewController: UITableViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let title = alertController.textFields![0].text
             let cookTime: Int? = Int((alertController.textFields?[1].text)!)
+            let image = #imageLiteral(resourceName: "recipeImage")
             
-            let recipe = Recipe(title: title!, cookTime: cookTime!)
+            let recipe = Recipe(title: title!, cookTime: cookTime!, image: image)
             
             if title == "" {
                 NSLog("Empty recipe title. Nothing is saved.")
@@ -161,11 +164,11 @@ class RecipiesTableViewController: UITableViewController {
                 
                 // Save recipe to database
                 DatabaseManager.shared.connection.readWrite { (transaction) in
-                    transaction.setObject(recipe, forKey: (recipe.Title + "Recipe"), inCollection: self.databaseCollection)
+                    transaction.setObject(recipe, forKey: (recipe.title + "Recipe"), inCollection: self.databaseCollection)
                     print(transaction.allKeys(inCollection: self.databaseCollection))
                 }
                 
-                NSLog("Saved: \(recipe.Title), \(recipe.CookTime) min")
+                NSLog("Saved: \(recipe.title), \(recipe.cookTime) min")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
@@ -192,8 +195,8 @@ class RecipiesTableViewController: UITableViewController {
                 guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
                     return
                 }
-                print("Recipe title: " + recipe.Title)
-                print("Cook time: \(recipe.CookTime)")
+                print("Recipe title: " + recipe.title)
+                print("Cook time: \(recipe.cookTime)")
                 print("")
                 
                 self.recipes.append(recipe)
