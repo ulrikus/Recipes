@@ -29,8 +29,6 @@ class RecipiesTableViewController: UITableViewController {
     let databaseCollection = "collection"
     let reuseIdentifier = "CustomRecipeCell"
     var recipes = [Recipe]()
-    var titleToPass: String!
-    var cookTimeToPass = Int()
     var keyToPass: String!
 //    var imageToPass: UIImage!
     
@@ -79,10 +77,7 @@ class RecipiesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = tableView.indexPathForSelectedRow!
         
-        titleToPass = recipes[indexPath.row].title
-        cookTimeToPass = recipes[indexPath.row].cookTime
-//        imageToPass = recipes[indexPath.row].image
-        keyToPass = titleToPass + "Recipe"
+        //keyToPass = titleToPass + "Recipe"
         
         self.performSegue(withIdentifier: segueIdentifier, sender: self)
     }
@@ -126,14 +121,14 @@ class RecipiesTableViewController: UITableViewController {
     // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let indexPath = tableView.indexPathForSelectedRow!
+        let recipe = recipes[indexPath.row]
         
         if (segue.identifier == segueIdentifier) {
             // initialize new view controller and cast it as your view controller
             let viewController = segue.destination as! DetailViewController
             // your new view controller should have property that will store passed value
-            viewController.recipeTitle = titleToPass
-            viewController.cookTime = cookTimeToPass
-//            viewController.recipeImage = imageToPass
+            viewController.recipe = recipe
             viewController.databaseKey = keyToPass
         }
     }

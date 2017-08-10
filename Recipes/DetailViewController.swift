@@ -9,11 +9,8 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    
-    var recipeTitle: String?
-    var cookTime: Int?
+    var recipe: Recipe?
     var databaseKey: String?
-    var recipeImage = #imageLiteral(resourceName: "standardRecipeImage")
     let databaseCollection = "collection"
     
     @IBOutlet weak var recipeTitleLabel: UILabel!
@@ -23,20 +20,25 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        recipeTitleLabel.text = recipeTitle
-        cookTimeLabel.text = "Estimated cook time: \(cookTime ?? 0) minutes"
-        recipeImageView.image = recipeImage
         
         let editBarButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editRecipe))
 
         self.navigationItem.rightBarButtonItem = editBarButton
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        recipeTitleLabel.text = recipe?.title ?? ""
+        cookTimeLabel.text = "Estimated cook time: \(recipe?.cookTime ?? 0) minutes"
+        recipeImageView.image = recipe?.image
+    }
+    
     func editRecipe() {
         let alertController = UIAlertController(title: "Edit recipe", message: "Type in the new title of your recipe", preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
-            textField.placeholder = self.recipeTitle
+            textField.placeholder = self.recipe?.title
         }
         alertController.addTextField { (textField) in
             textField.placeholder = "Cook Time in minutes"
@@ -46,7 +48,7 @@ class DetailViewController: UIViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let newTitle = alertController.textFields![0].text
             let newCookTime = Int(alertController.textFields![1].text!)
-            
+            /*
             let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, image: self.recipeImage)
             
             self.recipeTitleLabel.text = newTitle
@@ -59,7 +61,7 @@ class DetailViewController: UIViewController {
                 print(transaction.allKeys(inCollection: self.databaseCollection))
             }
             
-            NSLog("Save Edited Recipe")
+            NSLog("Save Edited Recipe")*/
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
