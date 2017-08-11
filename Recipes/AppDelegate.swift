@@ -12,6 +12,7 @@ extension AppDelegate: UIApplicationDelegate {
         
         let navigationController = UINavigationController(rootViewController: RecipiesTableViewController())
         window.rootViewController = navigationController
+        navigationController.navigationBar.isTranslucent = false
         window.makeKeyAndVisible()
         
         return true
