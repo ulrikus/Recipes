@@ -4,6 +4,7 @@ class Database {
 
     let database: YapDatabase
     let connection: YapDatabaseConnection
+    let databaseCollection = "collection"
 
     static let shared: Database = {
         return Database(database: YapDatabase(path: String.databasePath()))
@@ -13,6 +14,40 @@ class Database {
         self.database = database
         self.connection = database.newConnection()
     }
+
+    func read(completion: @escaping (([Recipe]) -> ())) {
+        Database.shared.connection.readWrite { transaction in
+            let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
+            var recipes = [Recipe]()
+            for key in allKeys {
+                guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
+                    return
+                }
+
+                recipes.append(recipe)
+            }
+
+            completion(recipes)
+        }
+    }
+
+    func create(title: String, cookingTime: Int, imageURL: String?, completion: @escaping ((Recipe) -> ())) {
+        let recipe = Recipe(title: title, cookingTime: cookingTime, imageURL: imageURL)
+
+        Database.shared.connection.readWrite { transaction in
+            transaction.setObject(recipe, forKey: recipe.title, inCollection: self.databaseCollection)
+
+            completion(recipe)
+        }
+    }
+
+//    func update() -> Recipe {
+//
+//    }
+//
+//    func delete() -> Bool {
+//
+//    }
 }
 
 extension String {

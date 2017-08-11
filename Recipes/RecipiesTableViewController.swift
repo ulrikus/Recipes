@@ -2,7 +2,6 @@ import UIKit
 
 class RecipiesTableViewController: UITableViewController {
 
-    let databaseCollection = "collection"
     var recipes = [Recipe]()
     var keyToPass: String!
 //    var imageToPass: UIImage!
@@ -19,21 +18,7 @@ class RecipiesTableViewController: UITableViewController {
         
         loadRecipesFromDatabase()        
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        updateRecipes()
-        tableView.reloadData()
-    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: TableView
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipes.count
     }
@@ -61,12 +46,12 @@ class RecipiesTableViewController: UITableViewController {
             let deletedRecipe = recipes.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            // Delete recipe from database
-            Database.shared.connection.readWrite { (transaction) in
-                let deleteKey = transaction.allKeys(inCollection: self.databaseCollection)[indexPath.row]
-                transaction.removeObject(forKey: deleteKey, inCollection: self.databaseCollection)
-                print(transaction.allKeys(inCollection: self.databaseCollection))
-            }
+//            // Delete recipe from database
+//            Database.shared.connection.readWrite { (transaction) in
+//                let deleteKey = transaction.allKeys(inCollection: self.databaseCollection)[indexPath.row]
+//                transaction.removeObject(forKey: deleteKey, inCollection: self.databaseCollection)
+//                print(transaction.allKeys(inCollection: self.databaseCollection))
+//            }
 
             NSLog("\(deletedRecipe.title) deleted")
             
@@ -108,25 +93,12 @@ class RecipiesTableViewController: UITableViewController {
         
         // Create the actions
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
-            let title = alertController.textFields![0].text
-            let cookTime: Int? = Int((alertController.textFields?[1].text)!)
-            let imageURL = "something"
-            
-            let recipe = Recipe(title: title!, cookTime: cookTime!, imageURL: imageURL)
-            
-            if title == "" {
-                NSLog("Empty recipe title. Nothing is saved.")
-            } else {
+            let title = alertController.textFields![0].text ?? ""
+            let cookingTime = Int((alertController.textFields?[1].text)!) ?? 0
+
+            Database.shared.create(title: title, cookingTime: cookingTime, imageURL: nil) { recipe in
                 self.recipes.append(recipe)
                 self.tableView.reloadData()
-                
-                // Save recipe to database
-                Database.shared.connection.readWrite { (transaction) in
-                    transaction.setObject(recipe, forKey: (recipe.title + "Recipe"), inCollection: self.databaseCollection)
-                    print(transaction.allKeys(inCollection: self.databaseCollection))
-                }
-                
-                NSLog("Saved: \(recipe.title), \(recipe.cookingTime) min")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
@@ -142,38 +114,9 @@ class RecipiesTableViewController: UITableViewController {
     }
     
     func loadRecipesFromDatabase() {
-        // Read recipe from database
-        Database.shared.connection.readWrite { (transaction) in
-            let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
-            print(allKeys)
-            print("\(allKeys.count) recipes:")
-            print("")
-            
-            for key in allKeys {
-                guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
-                    return
-                }
-                print("Recipe title: " + recipe.title)
-                print("Cook time: \(recipe.cookingTime)")
-                print("")
-                
-                self.recipes.append(recipe)
-            }
-        }
-    }
-    
-    func updateRecipes() {
-        // Basically does the same as loadRecipesFromDatabase(), but without the print()-statements and that this method deletes the array before populating it again
-        Database.shared.connection.readWrite { (transaction) in
-            let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
-            self.recipes.removeAll()
-            
-            for key in allKeys {
-                guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
-                    return
-                }
-               self.recipes.append(recipe)
-            }
+        Database.shared.read { recipes in
+            self.recipes = recipes
+            self.tableView.reloadData()
         }
     }
 }
