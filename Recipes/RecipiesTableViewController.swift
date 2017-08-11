@@ -25,18 +25,15 @@ class DatabaseManager {
 
 class RecipiesTableViewController: UITableViewController {
 
-    let segueIdentifier = "recipeDetailSegue"
     let databaseCollection = "collection"
-    let reuseIdentifier = "CustomRecipeCell"
     var recipes = [Recipe]()
     var keyToPass: String!
 //    var imageToPass: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let nib = UINib(nibName: reuseIdentifier, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: reuseIdentifier)
+
+        tableView.registerNib(CustomRecipeCell.self)
        
         let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRecipe))
         
@@ -65,7 +62,7 @@ class RecipiesTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as! CustomRecipeCell
+        let cell = tableView.dequeue(CustomRecipeCell.self, for: indexPath)
         
         cell.recipeTitleLabel.text = recipes[indexPath.row].title
         cell.recipeCookTimeLabel.text = "Cook time: \(recipes[indexPath.row].cookingTime) min"
@@ -75,13 +72,13 @@ class RecipiesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let indexPath = tableView.indexPathForSelectedRow!
-        
-        //keyToPass = titleToPass + "Recipe"
-        
-        self.performSegue(withIdentifier: segueIdentifier, sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let recipe = recipes[indexPath.row]
+        let detailController = DetailViewController(recipe: recipe)
+        self.navigationController?.pushViewController(detailController, animated: true)
     }
-    
+
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let deletedRecipe = recipes.remove(at: indexPath.row)
@@ -117,22 +114,7 @@ class RecipiesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-    // MARK: Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let indexPath = tableView.indexPathForSelectedRow!
-        let recipe = recipes[indexPath.row]
-        
-        if (segue.identifier == segueIdentifier) {
-            // initialize new view controller and cast it as your view controller
-            let viewController = segue.destination as! DetailViewController
-            // your new view controller should have property that will store passed value
-            viewController.recipe = recipe
-            viewController.databaseKey = keyToPass
-        }
-    }
-    
+
     // MARK: Methods
     
     func addRecipe() {
