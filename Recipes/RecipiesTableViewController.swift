@@ -43,19 +43,13 @@ class RecipiesTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let deletedRecipe = recipes.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            let recipe = recipes[indexPath.row]
+            Database.shared.delete(id: recipe.id) { success in
+                self.recipes.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.reloadData()
+            }
             
-//            // Delete recipe from database
-//            Database.shared.connection.readWrite { (transaction) in
-//                let deleteKey = transaction.allKeys(inCollection: self.databaseCollection)[indexPath.row]
-//                transaction.removeObject(forKey: deleteKey, inCollection: self.databaseCollection)
-//                print(transaction.allKeys(inCollection: self.databaseCollection))
-//            }
-
-            NSLog("\(deletedRecipe.title) deleted")
-            
-            tableView.reloadData()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
             print("insert editing style")

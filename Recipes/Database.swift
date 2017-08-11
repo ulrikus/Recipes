@@ -45,9 +45,13 @@ class Database {
 //
 //    }
 //
-//    func delete() -> Bool {
-//
-//    }
+    func delete(id: String, completion: @escaping (() -> ())) {
+        Database.shared.connection.readWrite { (transaction) in
+            transaction.removeObject(forKey: id, inCollection: self.databaseCollection)
+
+            completion()
+        }
+    }
 }
 
 extension String {
