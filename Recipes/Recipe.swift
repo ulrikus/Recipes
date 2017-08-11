@@ -10,42 +10,42 @@ import UIKit
 
 class Recipe: NSObject, NSCoding {
     
-    struct Keys {
-        static let Title = "recipe"
-        static let CookTime = "cookTime"
-        static let Image = "image"
+    enum Keys: String {
+        case title
+        case cookingTime
+        case imageURL
     }
     
     let title: String
-    let cookTime: Int
-    let image: UIImage?
+    let cookingTime: Int
+    let imageURL: String?
     
-    init(title: String, cookTime: Int, image: UIImage) {
+    init(title: String, cookTime: Int, imageURL: String) {
         self.title = title
-        self.cookTime = cookTime
-        self.image = image
+        self.cookingTime = cookTime
+        self.imageURL = imageURL
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let titleObject = aDecoder.decodeObject(forKey: Keys.Title) as? String {
+        if let titleObject = aDecoder.decodeObject(forKey: Keys.title.rawValue) as? String {
             title = titleObject
         } else {
             title = "No title"
         }
         
-        let cookTimeObject = aDecoder.decodeInteger(forKey: Keys.CookTime)
-        cookTime = cookTimeObject
+        let cookTimeObject = aDecoder.decodeInteger(forKey: Keys.cookingTime.rawValue)
+        cookingTime = cookTimeObject
         
-        if let imageData = aDecoder.decodeObject(forKey: Keys.Image) as? Data {
-            image = UIImage(data: imageData)
+        if let imageUrlObject = aDecoder.decodeObject(forKey: Keys.imageURL.rawValue) as? String {
+            imageURL = imageUrlObject
         } else {
-            image = #imageLiteral(resourceName: "standardRecipeImage")
+            imageURL = nil
         }
     }
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(title, forKey: Keys.Title)
-        aCoder.encode(cookTime, forKey: Keys.CookTime)
-        aCoder.encode(image, forKey: Keys.Image)
+        aCoder.encode(title, forKey: Keys.title.rawValue)
+        aCoder.encode(cookingTime, forKey: Keys.cookingTime.rawValue)
+        aCoder.encode(imageURL, forKey: Keys.imageURL.rawValue)
     }
 }

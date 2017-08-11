@@ -30,8 +30,8 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         
         recipeTitleLabel.text = recipe?.title ?? ""
-        cookTimeLabel.text = "Estimated cook time: \(recipe?.cookTime ?? 0) minutes"
-        recipeImageView.image = recipe?.image
+        cookTimeLabel.text = "Estimated cook time: \(recipe?.cookingTime ?? 0) minutes"
+        recipeImageView.image = #imageLiteral(resourceName: "standardRecipeImage")
     }
     
     func editRecipe() {
@@ -48,8 +48,9 @@ class DetailViewController: UIViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let newTitle = alertController.textFields![0].text
             let newCookTime = Int(alertController.textFields![1].text!)
-            /*
-            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, image: self.recipeImage)
+            let image = (self.recipe?.imageURL)!
+            
+            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, imageURL: image)
             
             self.recipeTitleLabel.text = newTitle
             self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"
@@ -61,7 +62,7 @@ class DetailViewController: UIViewController {
                 print(transaction.allKeys(inCollection: self.databaseCollection))
             }
             
-            NSLog("Save Edited Recipe")*/
+            NSLog("Save Edited Recipe")
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in

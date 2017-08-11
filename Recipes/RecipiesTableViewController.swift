@@ -68,8 +68,8 @@ class RecipiesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as! CustomRecipeCell
         
         cell.recipeTitleLabel.text = recipes[indexPath.row].title
-        cell.recipeCookTimeLabel.text = "Cook time: \(recipes[indexPath.row].cookTime) min"
-        cell.recipeImage.image = recipes[indexPath.row].image
+        cell.recipeCookTimeLabel.text = "Cook time: \(recipes[indexPath.row].cookingTime) min"
+//        cell.recipeImage.image = recipes[indexPath.row].imageURL
         
         return cell
     }
@@ -151,9 +151,9 @@ class RecipiesTableViewController: UITableViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
             let title = alertController.textFields![0].text
             let cookTime: Int? = Int((alertController.textFields?[1].text)!)
-            let image = #imageLiteral(resourceName: "standardRecipeImage")
+            let imageURL = "something"
             
-            let recipe = Recipe(title: title!, cookTime: cookTime!, image: image)
+            let recipe = Recipe(title: title!, cookTime: cookTime!, imageURL: imageURL)
             
             if title == "" {
                 NSLog("Empty recipe title. Nothing is saved.")
@@ -167,7 +167,7 @@ class RecipiesTableViewController: UITableViewController {
                     print(transaction.allKeys(inCollection: self.databaseCollection))
                 }
                 
-                NSLog("Saved: \(recipe.title), \(recipe.cookTime) min")
+                NSLog("Saved: \(recipe.title), \(recipe.cookingTime) min")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
@@ -195,7 +195,7 @@ class RecipiesTableViewController: UITableViewController {
                     return
                 }
                 print("Recipe title: " + recipe.title)
-                print("Cook time: \(recipe.cookTime)")
+                print("Cook time: \(recipe.cookingTime)")
                 print("")
                 
                 self.recipes.append(recipe)
