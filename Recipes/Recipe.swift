@@ -12,9 +12,9 @@ class Recipe: NSObject, NSCoding {
     let cookingTime: Int
     let imageURL: String?
     
-    init(title: String, cookTime: Int, imageURL: String) {
+    init(title: String, cookingTime: Int, imageURL: String?) {
         self.title = title
-        self.cookingTime = cookTime
+        self.cookingTime = cookingTime
         self.imageURL = imageURL
     }
     
