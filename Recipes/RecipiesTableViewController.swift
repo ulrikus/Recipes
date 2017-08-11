@@ -1,11 +1,3 @@
-//
-//  RecipiesTableViewController.swift
-//  Recipes
-//
-//  Created by Ulrik Utheim Sverdrup on 01.08.2017.
-//  Copyright © 2017 Ulrik Utheim Sverdrup. All rights reserved.
-//
-
 import UIKit
 
 class DatabaseManager {
