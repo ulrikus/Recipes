@@ -1,7 +1,7 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    private var recipe: Recipe?
+    private unowned var recipe: Recipe
     var databaseKey: String?
     let databaseCollection = "collection"
 
@@ -42,42 +42,31 @@ class DetailViewController: UIViewController {
         let alertController = UIAlertController(title: "Edit recipe", message: "Type in the new title of your recipe", preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
-            textField.placeholder = self.recipe?.title
+            textField.placeholder = self.recipe.title
         }
         alertController.addTextField { (textField) in
             textField.placeholder = "Cook Time in minutes"
         }
         
-//        // Create the actions
-//        let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
-//            let newTitle = alertController.textFields![0].text
-//            let newCookTime = Int(alertController.textFields![1].text!)
-//            let image = (self.recipe?.imageURL)!
-//            
-//            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, imageURL: image)
-//
-//            self.recipeTitleLabel.text = newTitle
-//            self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"
-//
-//            Database.shared.connection.readWrite { (transaction) in
-//                transaction.removeObject(forKey: self.databaseKey!, inCollection: self.databaseCollection)
-//                
-//                transaction.setObject(newRecipe, forKey: newTitle! + "Recipe", inCollection: self.databaseCollection)
-//                print(transaction.allKeys(inCollection: self.databaseCollection))
-//            }
-//            
-//            NSLog("Save Edited Recipe")
-//        }
-//        
-//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
-//            NSLog("Cancel Edit Recipe")
-//        }
-//        
-//        // Add the actions
-//        alertController.addAction(saveAction)
-//        alertController.addAction(cancelAction)
-//        
-//        // Present the controller
-//        self.present(alertController, animated: true, completion: nil)
+        // Create the actions
+        let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
+            let newTitle = alertController.textFields![0].text
+            let newCookingTime = Int(alertController.textFields![1].text!)
+            
+            Database.shared.update(id: self.recipe.id, title: newTitle!, cookingTime: newCookingTime!, imageURL: nil, completion: { recipe in
+                self.recipe = recipe
+            })
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
+            NSLog("Cancel Edit Recipe")
+        }
+        
+        // Add the actions
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        
+        // Present the controller
+        self.present(alertController, animated: true, completion: nil)
     }
 }

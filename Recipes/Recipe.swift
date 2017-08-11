@@ -9,9 +9,9 @@ class Recipe: NSObject, NSCoding {
         case imageURL
     }
     
-    let title: String
-    let cookingTime: Int
-    let imageURL: String?
+    var title: String
+    var cookingTime: Int
+    var imageURL: String?
     let id: String
     
     init(title: String, cookingTime: Int, imageURL: String?) {

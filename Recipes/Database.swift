@@ -41,10 +41,19 @@ class Database {
         }
     }
 
-//    func update() -> Recipe {
-//
-//    }
-//
+    func update(id: String, title: String, cookingTime: Int, imageURL: String?, completion: @escaping ((Recipe) -> ())) {
+        Database.shared.connection.readWrite { transaction in
+            let recipe = transaction.object(forKey: id, inCollection: self.databaseCollection) as! Recipe
+            recipe.title = title
+            recipe.cookingTime = cookingTime
+            recipe.imageURL = imageURL
+            
+            transaction.setObject(recipe, forKey: id, inCollection: self.databaseCollection)
+
+            completion(recipe)
+        }
+    }
+
     func delete(id: String, completion: @escaping (() -> ())) {
         Database.shared.connection.readWrite { (transaction) in
             transaction.removeObject(forKey: id, inCollection: self.databaseCollection)
