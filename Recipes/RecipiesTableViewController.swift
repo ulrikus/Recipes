@@ -1,20 +1,5 @@
 import UIKit
 
-class DatabaseManager {
-
-    let database: YapDatabase
-    let connection: YapDatabaseConnection
-    
-    static let shared: DatabaseManager = {
-        return DatabaseManager(database: YapDatabase(path: String.databasePath()))
-    }()
-    
-    private init(database: YapDatabase) {
-        self.database = database
-        self.connection = database.newConnection()
-    }
-}
-
 class RecipiesTableViewController: UITableViewController {
 
     let databaseCollection = "collection"
@@ -77,7 +62,7 @@ class RecipiesTableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             // Delete recipe from database
-            DatabaseManager.shared.connection.readWrite { (transaction) in
+            Database.shared.connection.readWrite { (transaction) in
                 let deleteKey = transaction.allKeys(inCollection: self.databaseCollection)[indexPath.row]
                 transaction.removeObject(forKey: deleteKey, inCollection: self.databaseCollection)
                 print(transaction.allKeys(inCollection: self.databaseCollection))
@@ -136,7 +121,7 @@ class RecipiesTableViewController: UITableViewController {
                 self.tableView.reloadData()
                 
                 // Save recipe to database
-                DatabaseManager.shared.connection.readWrite { (transaction) in
+                Database.shared.connection.readWrite { (transaction) in
                     transaction.setObject(recipe, forKey: (recipe.title + "Recipe"), inCollection: self.databaseCollection)
                     print(transaction.allKeys(inCollection: self.databaseCollection))
                 }
@@ -158,7 +143,7 @@ class RecipiesTableViewController: UITableViewController {
     
     func loadRecipesFromDatabase() {
         // Read recipe from database
-        DatabaseManager.shared.connection.readWrite { (transaction) in
+        Database.shared.connection.readWrite { (transaction) in
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
             print(allKeys)
             print("\(allKeys.count) recipes:")
@@ -179,7 +164,7 @@ class RecipiesTableViewController: UITableViewController {
     
     func updateRecipes() {
         // Basically does the same as loadRecipesFromDatabase(), but without the print()-statements and that this method deletes the array before populating it again
-        DatabaseManager.shared.connection.readWrite { (transaction) in
+        Database.shared.connection.readWrite { (transaction) in
             let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
             self.recipes.removeAll()
             
@@ -190,16 +175,5 @@ class RecipiesTableViewController: UITableViewController {
                self.recipes.append(recipe)
             }
         }
-    }
-}
-
-extension String {
-    static func databasePath() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let baseDir = paths.count > 0 ? paths[0] : NSTemporaryDirectory()
-        
-        let databaseName = "database.sqlite"
-        
-        return baseDir + databaseName
     }
 }

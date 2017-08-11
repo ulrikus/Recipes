@@ -57,7 +57,7 @@ class DetailViewController: UIViewController {
 //            self.recipeTitleLabel.text = newTitle
 //            self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"
 //
-//            DatabaseManager.shared.connection.readWrite { (transaction) in
+//            Database.shared.connection.readWrite { (transaction) in
 //                transaction.removeObject(forKey: self.databaseKey!, inCollection: self.databaseCollection)
 //                
 //                transaction.setObject(newRecipe, forKey: newTitle! + "Recipe", inCollection: self.databaseCollection)
