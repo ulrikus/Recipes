@@ -1,11 +1,15 @@
-//
-//  DetailView.swift
-//  Recipes
-//
-//  Created by Utheim Sverdrup, Ulrik on 11.08.2017.
-//  Copyright © 2017 Ulrik Utheim Sverdrup. All rights reserved.
-//
-
 import UIKit
 
+class DetailView: UIView {
+    @IBOutlet weak var recipeTitleLabel: UILabel!
+    @IBOutlet weak var cookTimeLabel: UILabel!
+    @IBOutlet weak var recipeImageView: UIImageView!
 
+    var recipe: Recipe? {
+        didSet {
+            recipeTitleLabel.text = recipe?.title ?? ""
+            cookTimeLabel.text = "Estimated cook time: \(recipe?.cookingTime ?? 0) minutes"
+            recipeImageView.image = #imageLiteral(resourceName: "standardRecipeImage")
+        }
+    }
+}
