@@ -28,6 +28,8 @@ class DetailViewController: UIViewController {
         let editBarButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editRecipe))
 
         self.navigationItem.rightBarButtonItem = editBarButton
+        
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
