@@ -1,39 +1,15 @@
-//
-//  RecipiesTableViewController.swift
-//  Recipes
-//
-//  Created by Ulrik Utheim Sverdrup on 01.08.2017.
-//  Copyright © 2017 Ulrik Utheim Sverdrup. All rights reserved.
-//
-
 import UIKit
-
-class DatabaseManager {
-
-    let database: YapDatabase
-    let connection: YapDatabaseConnection
-    
-    static let shared: DatabaseManager = {
-        return DatabaseManager(database: YapDatabase(path: String.databasePath()))
-    }()
-    
-    private init(database: YapDatabase) {
-        self.database = database
-        self.connection = database.newConnection()
-    }
-}
 
 class RecipiesTableViewController: UITableViewController {
 
-    let segueIdentifier = "recipeDetailSegue"
-    let databaseCollection = "collection"
     var recipes = [Recipe]()
-    var titleToPass: String!
-    var cookTimeToPass = Int()
     var keyToPass: String!
+//    var imageToPass: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.registerNib(CustomRecipeCell.self)
        
         let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRecipe))
         
@@ -42,59 +18,42 @@ class RecipiesTableViewController: UITableViewController {
         
         loadRecipesFromDatabase()        
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        updateRecipes()
-        tableView.reloadData()
-    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: TableView
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reuseIdentifier = "recipeCell"
+        let cell = tableView.dequeue(CustomRecipeCell.self, for: indexPath)
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
+        cell.recipeTitleLabel.text = recipes[indexPath.row].title
+        cell.recipeCookTimeLabel.text = "Cook time: \(recipes[indexPath.row].cookingTime) min"
+//        cell.recipeImage.image = recipes[indexPath.row].imageURL
         
-        cell?.textLabel?.text = recipes[indexPath.row].Title
-        cell?.detailTextLabel?.text = "Cook time: \(recipes[indexPath.row].CookTime) min"
-        
-        return cell!
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let indexPath = tableView.indexPathForSelectedRow!
-        
-        titleToPass = recipes[indexPath.row].Title
-        cookTimeToPass = recipes[indexPath.row].CookTime
-        keyToPass = titleToPass + "Recipe"
-        
-        self.performSegue(withIdentifier: segueIdentifier, sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let recipe = recipes[indexPath.row]
+        let detailController = DetailViewController(recipe: recipe)
+        self.navigationController?.pushViewController(detailController, animated: true)
     }
-    
+
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let deletedRecipe = recipes.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            // Delete recipe from database
-            DatabaseManager.shared.connection.readWrite { (transaction) in
-                let deleteKey = transaction.allKeys(inCollection: self.databaseCollection)[indexPath.row]
-                transaction.removeObject(forKey: deleteKey, inCollection: self.databaseCollection)
-                print(transaction.allKeys(inCollection: self.databaseCollection))
-            }
+//            // Delete recipe from database
+//            Database.shared.connection.readWrite { (transaction) in
+//                let deleteKey = transaction.allKeys(inCollection: self.databaseCollection)[indexPath.row]
+//                transaction.removeObject(forKey: deleteKey, inCollection: self.databaseCollection)
+//                print(transaction.allKeys(inCollection: self.databaseCollection))
+//            }
 
-            NSLog("\(deletedRecipe.Title) deleted")
+            NSLog("\(deletedRecipe.title) deleted")
             
             tableView.reloadData()
         } else if editingStyle == .insert {
@@ -117,21 +76,7 @@ class RecipiesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-    // MARK: Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if (segue.identifier == segueIdentifier) {
-            // initialize new view controller and cast it as your view controller
-            let viewController = segue.destination as! DetailViewController
-            // your new view controller should have property that will store passed value
-            viewController.recipeTitle = titleToPass
-            viewController.cookTime = cookTimeToPass
-            viewController.databaseKey = keyToPass
-        }
-    }
-    
+
     // MARK: Methods
     
     func addRecipe() {
@@ -148,24 +93,12 @@ class RecipiesTableViewController: UITableViewController {
         
         // Create the actions
         let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
-            let title = alertController.textFields![0].text
-            let cookTime: Int? = Int((alertController.textFields?[1].text)!)
-            
-            let recipe = Recipe(title: title!, cookTime: cookTime!)
-            
-            if title == "" {
-                NSLog("Empty recipe title. Nothing is saved.")
-            } else {
+            let title = alertController.textFields![0].text ?? ""
+            let cookingTime = Int((alertController.textFields?[1].text)!) ?? 0
+
+            Database.shared.create(title: title, cookingTime: cookingTime, imageURL: nil) { recipe in
                 self.recipes.append(recipe)
                 self.tableView.reloadData()
-                
-                // Save recipe to database
-                DatabaseManager.shared.connection.readWrite { (transaction) in
-                    transaction.setObject(recipe, forKey: (recipe.Title + "Recipe"), inCollection: self.databaseCollection)
-                    print(transaction.allKeys(inCollection: self.databaseCollection))
-                }
-                
-                NSLog("Saved: \(recipe.Title), \(recipe.CookTime) min")
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
@@ -181,49 +114,9 @@ class RecipiesTableViewController: UITableViewController {
     }
     
     func loadRecipesFromDatabase() {
-        // Read recipe from database
-        DatabaseManager.shared.connection.readWrite { (transaction) in
-            let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
-            print(allKeys)
-            print("\(allKeys.count) recipes:")
-            print("")
-            
-            for key in allKeys {
-                guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
-                    return
-                }
-                print("Recipe title: " + recipe.Title)
-                print("Cook time: \(recipe.CookTime)")
-                print("")
-                
-                self.recipes.append(recipe)
-            }
+        Database.shared.read { recipes in
+            self.recipes = recipes
+            self.tableView.reloadData()
         }
-    }
-    
-    func updateRecipes() {
-        // Basically does the same as loadRecipesFromDatabase(), but without the print()-statements and that this method deletes the array before populating it again
-        DatabaseManager.shared.connection.readWrite { (transaction) in
-            let allKeys = transaction.allKeys(inCollection: self.databaseCollection)
-            self.recipes.removeAll()
-            
-            for key in allKeys {
-                guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
-                    return
-                }
-               self.recipes.append(recipe)
-            }
-        }
-    }
-}
-
-extension String {
-    static func databasePath() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let baseDir = paths.count > 0 ? paths[0] : NSTemporaryDirectory()
-        
-        let databaseName = "database.sqlite"
-        
-        return baseDir + databaseName
     }
 }

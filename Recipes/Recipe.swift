@@ -1,56 +1,43 @@
-//
-//  Recipe.swift
-//  Recipes
-//
-//  Created by Utheim Sverdrup, Ulrik on 01.08.2017.
-//  Copyright © 2017 Ulrik Utheim Sverdrup. All rights reserved.
-//
-
-import Foundation
+import UIKit
 
 class Recipe: NSObject, NSCoding {
     
-    struct Keys {
-        static let Title = "recipe"
-        static let CookTime = "cookTime"
+    enum Keys: String {
+        case title
+        case cookingTime
+        case imageURL
     }
     
-    private var _title = ""
-    private var _cookTime = Int()
+    let title: String
+    let cookingTime: Int
+    let imageURL: String?
     
-    init(title: String, cookTime: Int) {
-        self._title = title
-        self._cookTime = cookTime
+    init(title: String, cookingTime: Int, imageURL: String?) {
+        self.title = title
+        self.cookingTime = cookingTime
+        self.imageURL = imageURL
     }
     
     required init?(coder aDecoder: NSCoder) {
-        if let titleObject = aDecoder.decodeObject(forKey: Keys.Title) as? String {
-            _title = titleObject
+        if let titleObject = aDecoder.decodeObject(forKey: Keys.title.rawValue) as? String {
+            title = titleObject
+        } else {
+            title = "No title"
         }
         
-        let cookTimeObject = aDecoder.decodeInteger(forKey: Keys.CookTime)
-        _cookTime = cookTimeObject
+        let cookTimeObject = aDecoder.decodeInteger(forKey: Keys.cookingTime.rawValue)
+        cookingTime = cookTimeObject
         
+        if let imageUrlObject = aDecoder.decodeObject(forKey: Keys.imageURL.rawValue) as? String {
+            imageURL = imageUrlObject
+        } else {
+            imageURL = nil
+        }
     }
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(_title, forKey: Keys.Title)
-        aCoder.encode(_cookTime, forKey: Keys.CookTime)
-    }
-    
-    var Title: String {
-        get {
-            return _title
-        } set {
-            _title = newValue
-        }
-    }
-    
-    var CookTime: Int {
-        get {
-            return _cookTime
-        } set {
-            _cookTime = newValue
-        }
+        aCoder.encode(title, forKey: Keys.title.rawValue)
+        aCoder.encode(cookingTime, forKey: Keys.cookingTime.rawValue)
+        aCoder.encode(imageURL, forKey: Keys.imageURL.rawValue)
     }
 }

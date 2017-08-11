@@ -1,73 +1,83 @@
-//
-//  DetailViewController.swift
-//  Recipes
-//
-//  Created by Utheim Sverdrup, Ulrik on 01.08.2017.
-//  Copyright © 2017 Ulrik Utheim Sverdrup. All rights reserved.
-//
-
 import UIKit
 
 class DetailViewController: UIViewController {
-    
-    var recipeTitle: String?
-    var cookTime: Int?
+    private var recipe: Recipe?
     var databaseKey: String?
     let databaseCollection = "collection"
+
+    init(recipe: Recipe) {
+        self.recipe = recipe
+
+        super.init(nibName: nil, bundle: nil)
+    }
     
-    @IBOutlet weak var recipeTitleLabel: UILabel!
-    @IBOutlet weak var cookTimeLabel: UILabel!
-    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private var customView: DetailView { return self.view as! DetailView }
+
+    override func loadView() {
+        let view = UIView.instanceFromNib() as DetailView
+        self.view = view
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        recipeTitleLabel.text = recipeTitle
-        cookTimeLabel.text = "Estimated cook time: \(cookTime ?? 0) minutes"
-        
+
         let editBarButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editRecipe))
 
         self.navigationItem.rightBarButtonItem = editBarButton
+        
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        customView.recipe = self.recipe
     }
     
     func editRecipe() {
         let alertController = UIAlertController(title: "Edit recipe", message: "Type in the new title of your recipe", preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
-            textField.placeholder = self.recipeTitle
+            textField.placeholder = self.recipe?.title
         }
         alertController.addTextField { (textField) in
             textField.placeholder = "Cook Time in minutes"
         }
         
-        // Create the actions
-        let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
-            let newTitle = alertController.textFields![0].text
-            let newCookTime = Int(alertController.textFields![1].text!)
-            
-            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!)
-            
-            self.recipeTitleLabel.text = newTitle
-            self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"
-            
-            DatabaseManager.shared.connection.readWrite { (transaction) in
-                transaction.removeObject(forKey: self.databaseKey!, inCollection: self.databaseCollection)
-                
-                transaction.setObject(newRecipe, forKey: newTitle! + "Recipe", inCollection: self.databaseCollection)
-                print(transaction.allKeys(inCollection: self.databaseCollection))
-            }
-            
-            NSLog("Save Edited Recipe")
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
-            NSLog("Cancel Edit Recipe")
-        }
-        
-        // Add the actions
-        alertController.addAction(saveAction)
-        alertController.addAction(cancelAction)
-        
-        // Present the controller
-        self.present(alertController, animated: true, completion: nil)
+//        // Create the actions
+//        let saveAction = UIAlertAction(title: "Save", style: UIAlertActionStyle.default) { alert in
+//            let newTitle = alertController.textFields![0].text
+//            let newCookTime = Int(alertController.textFields![1].text!)
+//            let image = (self.recipe?.imageURL)!
+//            
+//            let newRecipe = Recipe(title: newTitle!, cookTime: newCookTime!, imageURL: image)
+//
+//            self.recipeTitleLabel.text = newTitle
+//            self.cookTimeLabel.text = "Estimated cook time: \(newCookTime ?? 0) minutes"
+//
+//            Database.shared.connection.readWrite { (transaction) in
+//                transaction.removeObject(forKey: self.databaseKey!, inCollection: self.databaseCollection)
+//                
+//                transaction.setObject(newRecipe, forKey: newTitle! + "Recipe", inCollection: self.databaseCollection)
+//                print(transaction.allKeys(inCollection: self.databaseCollection))
+//            }
+//            
+//            NSLog("Save Edited Recipe")
+//        }
+//        
+//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
+//            NSLog("Cancel Edit Recipe")
+//        }
+//        
+//        // Add the actions
+//        alertController.addAction(saveAction)
+//        alertController.addAction(cancelAction)
+//        
+//        // Present the controller
+//        self.present(alertController, animated: true, completion: nil)
     }
 }
