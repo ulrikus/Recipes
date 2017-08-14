@@ -3,20 +3,24 @@ import UIKit
 class RecipiesTableViewController: UITableViewController {
 
     var recipes = [Recipe]()
-    var keyToPass: String!
-//    var imageToPass: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.registerNib(CustomRecipeCell.self)
        
-        let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRecipe))
+        let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentAddRecipeForm))
         
         self.navigationItem.rightBarButtonItem = addBarButton
         self.navigationItem.leftBarButtonItem = editButtonItem
         
         loadRecipesFromDatabase()        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tableView.reloadData()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -73,7 +77,7 @@ class RecipiesTableViewController: UITableViewController {
 
     // MARK: Methods
     
-    func addRecipe() {
+    func presentAddRecipeForm() {
         // Create the alert controller
         let alertController = UIAlertController(title: "Add recipe", message: "Type in the title of your recipe", preferredStyle: .alert)
         
@@ -95,7 +99,7 @@ class RecipiesTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default) { alert in
             NSLog("Cancel Pressed")
         }
         

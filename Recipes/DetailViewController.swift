@@ -55,10 +55,11 @@ class DetailViewController: UIViewController {
             
             Database.shared.update(id: self.recipe.id, title: newTitle!, cookingTime: newCookingTime!, imageURL: nil, completion: { recipe in
                 self.recipe = recipe
+                self.customView.recipe = self.recipe
             })
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { alert in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default) { alert in
             NSLog("Cancel Edit Recipe")
         }
         
