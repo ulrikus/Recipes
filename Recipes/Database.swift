@@ -23,10 +23,8 @@ class Database {
                 guard let recipe = transaction.object(forKey: key, inCollection: self.databaseCollection) as? Recipe else {
                     return
                 }
-
                 recipes.append(recipe)
             }
-
             completion(recipes)
         }
     }
@@ -35,7 +33,7 @@ class Database {
         let recipe = Recipe(title: title, cookingTime: cookingTime, imageURL: imageURL)
 
         Database.shared.connection.readWrite { transaction in
-            transaction.setObject(recipe, forKey: recipe.title, inCollection: self.databaseCollection)
+            transaction.setObject(recipe, forKey: recipe.id, inCollection: self.databaseCollection)
 
             completion(recipe)
         }
